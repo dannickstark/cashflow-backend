@@ -1,0 +1,14 @@
+#Run
+`go run ./cmd/server/main.go serve`
+
+
+
+#Fly.io deployment
+## Create toml file
+`flyctl launch --build-only --no-deploy`
+## Mount volume
+`flyctl volumes create pb_data --size=1`
+## deploy
+`flyctl deploy`
+## deploy but build locally
+`fly deploy --local-only`

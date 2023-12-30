@@ -1,6 +1,7 @@
 package config
 
 import (
+	"cashflow/backend/utils"
 	"fmt"
 
 	"github.com/spf13/viper"
@@ -13,7 +14,9 @@ type Configuration struct {
 func LoadConfig(configPath, configName, configType string) (*Configuration, error) {
 	var config *Configuration
 
-	viper.AddConfigPath(configPath)
+	absPath := utils.GetAbsolutePath(configPath)
+
+	viper.AddConfigPath(absPath)
 	viper.SetConfigName(configName)
 	viper.SetConfigType(configType)
 

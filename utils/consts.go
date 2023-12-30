@@ -1,7 +1,7 @@
 package utils
 
 const (
-	ConfigPath = "./data"
+	ConfigPath = "data"
 	ConfigName = "config"
 	ConfigType = "yaml"
 )

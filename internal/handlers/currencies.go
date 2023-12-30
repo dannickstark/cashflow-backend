@@ -23,7 +23,7 @@ func GetCurrencies() string {
 // Save the currencies data to a file
 func SaveCurrencies() {
 	currencies := GetCurrencies()
-	utils.SaveFile(currencies, "./data/currencies.json")
+	utils.SaveFile(currencies, utils.GetAbsolutePath("data/currencies.json"))
 }
 
 func CurrenciesHandler(c echo.Context) error {
@@ -34,7 +34,7 @@ func CurrenciesHandler(c echo.Context) error {
 	isLogged := admin != nil || record != nil
 
 	if isLogged {
-		dat, err := os.ReadFile("./data/currencies.json")
+		dat, err := os.ReadFile(utils.GetAbsolutePath("data/currencies.json"))
 		if err != nil {
 			return err
 		}

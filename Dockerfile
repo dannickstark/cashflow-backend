@@ -1,12 +1,13 @@
-FROM alpine:latest
+############################
+# STEP 1 build executable binary
+############################
+FROM golang:alpine AS builder
 
 ARG PB_VERSION=0.19.0
 
 RUN apk add --no-cache \
-    unzip \
-    ca-certificates \
-    # this is needed only if you want to use scp to copy later your pb_data locally
-    openssh
+    # Git is required for fetching the dependencies.
+    unzip
 
 # Copy your custom PocketBase and build
 COPY . /pb
@@ -17,12 +18,30 @@ WORKDIR /pb
 # leave this line in. 
 # For more complex builds that include other dependencies, remove this 
 # line and rely on the go.sum lockfile.
-RUN go get github.com/pocketbase/pocketbase
+#RUN go get github.com/pocketbase/pocketbase
+RUN go mod download
 
-RUN go build
+RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" ./cmd/server/main.go
+RUN ls
 WORKDIR /
+
+############################
+# STEP 2 build a small image
+############################
+FROM alpine:latest
+
+RUN apk add --no-cache \
+    ca-certificates \
+    # this is needed only if you want to use scp to copy later your pb_data locally
+    openssh
+
+# Copy our static executable.
+COPY --from=builder /pb/main /pb/main
+
+COPY /data /pb/data
+
 
 EXPOSE 8080
 
 # start PocketBase
-CMD ["/pb/cmd/server/main", "serve", "--http=0.0.0.0:8080"]
+CMD ["/pb/main", "serve", "--http=0.0.0.0:8080"]

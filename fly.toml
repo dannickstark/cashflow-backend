@@ -1,0 +1,31 @@
+# fly.toml app configuration file generated for cashflow-backend on 2023-12-30T11:08:20+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "cashflow-backend"
+primary_region = "ams"
+
+[build]
+
+[[mounts]]
+  source = "pb_data"
+  destination = "/pb/pb_data"
+  auto_extend_size_threshold = 0
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 550
+    soft_limit = 500
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 256
