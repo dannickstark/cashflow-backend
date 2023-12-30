@@ -5,15 +5,18 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/everapihq/freecurrencyapi-go"
+	//"github.com/everapihq/freecurrencyapi-go"
+	"github.com/everapihq/currencyapi-go"
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/apis"
 )
 
 // A function to get the currencies data from freecurrencyapi
 func GetCurrencies() string {
-	freecurrencyapi.Init("fca_live_NneNg9IWsGTcN2B6N34eGSm7ghCxDJwQa4XwHVjS")
-	result := freecurrencyapi.Latest(map[string]string{})
+	currencyapi.Init("cur_live_w6wMNcTij2UewLBsUAkl6cslaoD9LyOtXIYOafTj")
+	//freecurrencyapi.Init("fca_live_NneNg9IWsGTcN2B6N34eGSm7ghCxDJwQa4XwHVjS")
+	//result := freecurrencyapi.Latest(map[string]string{})
+	result := currencyapi.Latest(map[string]string{"base_currency": "USD"})
 	return string(result)
 }
 
