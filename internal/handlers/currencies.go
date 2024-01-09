@@ -9,7 +9,32 @@ import (
 	"github.com/everapihq/currencyapi-go"
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase/apis"
+	"github.com/pocketbase/pocketbase/core"
+	"github.com/pocketbase/pocketbase/tools/cron"
 )
+
+// A function to bind all the hooks for the currencies
+func BindCurrenciesHooks(app core.App) {
+	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+		e.Router.GET("/currencies", CurrenciesHandler /* optional middlewares */)
+		return nil
+	})
+
+	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+		// Get the currencies values from the API
+		SaveCurrencies()
+
+		// Create a scheduler to get the currencie's data each sunday
+		scheduler := cron.New()
+		scheduler.MustAdd("getCurrencies", "0 0 * * 0", func() {
+			SaveCurrencies()
+		})
+
+		scheduler.Start()
+
+		return nil
+	})
+}
 
 // A function to get the currencies data from freecurrencyapi
 func GetCurrencies() string {
