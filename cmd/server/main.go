@@ -33,11 +33,14 @@ func main() {
 	// [ Currencies ]===========================================
 	handlers.BindCurrenciesHooks(app)
 
+	// [ Users ]===========================================
+	hooks.BindUsersHooks(app)
+
 	// [ Budgets ]===========================================
 	hooks.BindBudgetsHooks(app)
 
-	// [ Users ]===========================================
-	hooks.BindUsersHooks(app)
+	// [ Transactions ]===========================================
+	hooks.BindTransactionsHooks(app)
 
 	// -------------------------------------------[Migration]-------------------------------------------
 	// loosely check if it was executed using "go run"

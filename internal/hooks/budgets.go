@@ -109,11 +109,11 @@ func BindBudgetsHooks(app *pocketbase.PocketBase) {
 	return dateCondition
 } */
 
-func checkIfCorrecPace(budget utils.Budget) bool {
+func checkIfBudgetCorrectPace(budget utils.Budget) bool {
 	return utils.CheckIfCorrecPace(budget.Date, int(budget.Pace), budget.PaceUnit)
 }
 
-func computeNextDate(budget utils.Budget) string {
+func computeBudgNextDate(budget utils.Budget) string {
 	return utils.ComputeNextDate(budget.Date, int(budget.Pace), budget.PaceUnit)
 }
 
@@ -137,7 +137,7 @@ func CreateBudget(app *pocketbase.PocketBase, budgetData map[string]any) (*model
 	return record, nil
 }
 
-func getBudgetByCat(app *pocketbase.PocketBase, category utils.BudgetType, paceUnit utils.PaceUnit) ([]utils.Budget, error) {
+func getBudgetByCat(app *pocketbase.PocketBase, category utils.TransactionType, paceUnit utils.PaceUnit) ([]utils.Budget, error) {
 	budgets := []utils.Budget{}
 	filter_cat := ""
 
@@ -193,7 +193,7 @@ func CloneBudgets(app *pocketbase.PocketBase, paceUnit utils.PaceUnit) error {
 	log.Printf("Found %d budgets", len(budgets))
 
 	// Filter to get budgets with the pace matching to today
-	budgets = utils.FilterList(budgets, checkIfCorrecPace)
+	budgets = utils.FilterList(budgets, checkIfBudgetCorrectPace)
 
 	// Iterate over all budgets
 	for _, budget := range budgets {
@@ -201,10 +201,12 @@ func CloneBudgets(app *pocketbase.PocketBase, paceUnit utils.PaceUnit) error {
 		newData := map[string]any{
 			"amount":          budget.Amount,
 			"currency":        budget.Currency,
-			"date":            computeNextDate(budget),
+			"date":            computeBudgNextDate(budget),
 			"user":            budget.User,
 			"incomeCategory":  budget.IncomeCategory,
 			"expenseCategory": budget.ExpenseCategory,
+			"repeatable":      budget.Repeatable,
+			"pace":            budget.Pace,
 			"paceUnit":        budget.PaceUnit,
 		}
 		// Create the budget
