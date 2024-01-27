@@ -15,7 +15,7 @@ func init() {
 			{
 				"id": "_pb_users_auth_",
 				"created": "2023-11-20 17:10:43.209Z",
-				"updated": "2023-12-03 10:16:03.338Z",
+				"updated": "2023-12-26 18:52:32.393Z",
 				"name": "users",
 				"type": "auth",
 				"system": false,
@@ -43,8 +43,6 @@ func init() {
 						"presentable": true,
 						"unique": false,
 						"options": {
-							"maxSelect": 1,
-							"maxSize": 5242880,
 							"mimeTypes": [
 								"image/jpeg",
 								"image/png",
@@ -53,6 +51,8 @@ func init() {
 								"image/webp"
 							],
 							"thumbs": null,
+							"maxSelect": 1,
+							"maxSize": 5242880,
 							"protected": false
 						}
 					}
@@ -71,13 +71,14 @@ func init() {
 					"manageRule": null,
 					"minPasswordLength": 8,
 					"onlyEmailDomains": null,
+					"onlyVerified": false,
 					"requireEmail": true
 				}
 			},
 			{
 				"id": "rtnsxvculz748mt",
 				"created": "2023-12-02 15:15:41.632Z",
-				"updated": "2023-12-07 18:18:25.727Z",
+				"updated": "2024-01-27 01:22:00.189Z",
 				"name": "settings",
 				"type": "base",
 				"system": false,
@@ -85,7 +86,7 @@ func init() {
 					{
 						"system": false,
 						"id": "r79wlvpj",
-						"name": "defaultCurency",
+						"name": "defaultCurrency",
 						"type": "text",
 						"required": false,
 						"presentable": false,
@@ -125,6 +126,18 @@ func init() {
 							"max": null,
 							"noDecimal": false
 						}
+					},
+					{
+						"system": false,
+						"id": "byln6tut",
+						"name": "avatar",
+						"type": "json",
+						"required": false,
+						"presentable": false,
+						"unique": false,
+						"options": {
+							"maxSize": 2000000
+						}
 					}
 				],
 				"indexes": [],
@@ -138,7 +151,7 @@ func init() {
 			{
 				"id": "uo6axjjrwj6yudy",
 				"created": "2023-12-02 15:28:58.736Z",
-				"updated": "2023-12-14 22:29:03.069Z",
+				"updated": "2024-01-09 12:02:26.230Z",
 				"name": "transactions",
 				"type": "base",
 				"system": false,
@@ -158,11 +171,25 @@ func init() {
 					},
 					{
 						"system": false,
+						"id": "gvmsugon",
+						"name": "note",
+						"type": "text",
+						"required": false,
+						"presentable": true,
+						"unique": false,
+						"options": {
+							"min": null,
+							"max": null,
+							"pattern": ""
+						}
+					},
+					{
+						"system": false,
 						"id": "06ufmhno",
 						"name": "amount",
 						"type": "number",
 						"required": true,
-						"presentable": false,
+						"presentable": true,
 						"unique": false,
 						"options": {
 							"min": 0,
@@ -190,7 +217,7 @@ func init() {
 						"name": "isExpense",
 						"type": "bool",
 						"required": false,
-						"presentable": true,
+						"presentable": false,
 						"unique": false,
 						"options": {}
 					},
@@ -238,20 +265,6 @@ func init() {
 					},
 					{
 						"system": false,
-						"id": "gvmsugon",
-						"name": "note",
-						"type": "text",
-						"required": false,
-						"presentable": false,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null,
-							"pattern": ""
-						}
-					},
-					{
-						"system": false,
 						"id": "3wswuycd",
 						"name": "description",
 						"type": "editor",
@@ -271,28 +284,14 @@ func init() {
 						"presentable": false,
 						"unique": false,
 						"options": {
-							"maxSelect": 1,
-							"maxSize": 5242880,
 							"mimeTypes": [
 								"image/png",
 								"image/jpeg"
 							],
 							"thumbs": [],
+							"maxSelect": 1,
+							"maxSize": 5242880,
 							"protected": false
-						}
-					},
-					{
-						"system": false,
-						"id": "qc4lvqie",
-						"name": "repeat",
-						"type": "number",
-						"required": false,
-						"presentable": false,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null,
-							"noDecimal": true
 						}
 					},
 					{
@@ -420,6 +419,64 @@ func init() {
 							"max": null,
 							"noDecimal": false
 						}
+					},
+					{
+						"system": false,
+						"id": "nlzyk2g5",
+						"name": "repeatable",
+						"type": "bool",
+						"required": false,
+						"presentable": false,
+						"unique": false,
+						"options": {}
+					},
+					{
+						"system": false,
+						"id": "ojtvcr6c",
+						"name": "pace",
+						"type": "number",
+						"required": false,
+						"presentable": false,
+						"unique": false,
+						"options": {
+							"min": null,
+							"max": null,
+							"noDecimal": false
+						}
+					},
+					{
+						"system": false,
+						"id": "mnajtx5s",
+						"name": "paceUnit",
+						"type": "select",
+						"required": false,
+						"presentable": false,
+						"unique": false,
+						"options": {
+							"maxSelect": 1,
+							"values": [
+								"day",
+								"week",
+								"month",
+								"year"
+							]
+						}
+					},
+					{
+						"system": false,
+						"id": "b0dsepcy",
+						"name": "next",
+						"type": "relation",
+						"required": false,
+						"presentable": false,
+						"unique": false,
+						"options": {
+							"collectionId": "uo6axjjrwj6yudy",
+							"cascadeDelete": false,
+							"minSelect": null,
+							"maxSelect": 1,
+							"displayFields": null
+						}
 					}
 				],
 				"indexes": [],
@@ -433,7 +490,7 @@ func init() {
 			{
 				"id": "z1ts4ey0o1vjc0j",
 				"created": "2023-12-02 15:30:26.972Z",
-				"updated": "2023-12-03 01:52:10.576Z",
+				"updated": "2023-12-26 18:52:32.394Z",
 				"name": "transactionCompanies",
 				"type": "base",
 				"system": false,
@@ -490,7 +547,7 @@ func init() {
 			{
 				"id": "7nxkyapivaoxy6h",
 				"created": "2023-12-02 15:40:09.615Z",
-				"updated": "2023-12-06 00:02:13.692Z",
+				"updated": "2023-12-26 18:52:32.394Z",
 				"name": "expenseCategories",
 				"type": "base",
 				"system": false,
@@ -504,12 +561,12 @@ func init() {
 						"presentable": true,
 						"unique": false,
 						"options": {
-							"maxSelect": 1,
-							"maxSize": 5242880,
 							"mimeTypes": [
 								"image/svg+xml"
 							],
 							"thumbs": [],
+							"maxSelect": 1,
+							"maxSize": 5242880,
 							"protected": false
 						}
 					},
@@ -625,7 +682,7 @@ func init() {
 			{
 				"id": "2b1nhmjfmpx6okg",
 				"created": "2023-12-02 15:48:08.652Z",
-				"updated": "2023-12-03 10:18:00.674Z",
+				"updated": "2023-12-26 18:52:32.394Z",
 				"name": "instalments",
 				"type": "base",
 				"system": false,
@@ -656,7 +713,7 @@ func init() {
 			{
 				"id": "r1zqilx88trto77",
 				"created": "2023-12-02 15:50:24.480Z",
-				"updated": "2023-12-09 14:51:13.678Z",
+				"updated": "2023-12-26 18:52:32.394Z",
 				"name": "accounts",
 				"type": "base",
 				"system": false,
@@ -779,7 +836,7 @@ func init() {
 			{
 				"id": "asj1m8bb30303x5",
 				"created": "2023-12-02 15:57:41.600Z",
-				"updated": "2023-12-06 00:02:38.885Z",
+				"updated": "2023-12-26 18:52:32.394Z",
 				"name": "incomeCategories",
 				"type": "base",
 				"system": false,
@@ -793,12 +850,12 @@ func init() {
 						"presentable": true,
 						"unique": false,
 						"options": {
-							"maxSelect": 1,
-							"maxSize": 5242880,
 							"mimeTypes": [
 								"image/svg+xml"
 							],
 							"thumbs": [],
+							"maxSelect": 1,
+							"maxSize": 5242880,
 							"protected": false
 						}
 					},
@@ -914,25 +971,11 @@ func init() {
 			{
 				"id": "20vk5ys2v509j6m",
 				"created": "2023-12-02 16:10:41.680Z",
-				"updated": "2023-12-23 23:32:49.787Z",
+				"updated": "2024-01-07 22:59:07.498Z",
 				"name": "budgets",
 				"type": "base",
 				"system": false,
 				"schema": [
-					{
-						"system": false,
-						"id": "ifci0hre",
-						"name": "name",
-						"type": "text",
-						"required": true,
-						"presentable": true,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null,
-							"pattern": ""
-						}
-					},
 					{
 						"system": false,
 						"id": "asjbukjm",
@@ -950,7 +993,7 @@ func init() {
 					{
 						"system": false,
 						"id": "tlw0wdtl",
-						"name": "curency",
+						"name": "currency",
 						"type": "text",
 						"required": true,
 						"presentable": true,
@@ -963,34 +1006,15 @@ func init() {
 					},
 					{
 						"system": false,
-						"id": "fecqv6bo",
-						"name": "pace",
-						"type": "number",
+						"id": "yydmxxra",
+						"name": "date",
+						"type": "date",
 						"required": true,
 						"presentable": false,
 						"unique": false,
 						"options": {
-							"min": null,
-							"max": null,
-							"noDecimal": true
-						}
-					},
-					{
-						"system": false,
-						"id": "x1dhzw9w",
-						"name": "paceUnit",
-						"type": "select",
-						"required": false,
-						"presentable": false,
-						"unique": false,
-						"options": {
-							"maxSelect": 1,
-							"values": [
-								"Day",
-								"Week",
-								"Month",
-								"Year"
-							]
+							"min": "",
+							"max": ""
 						}
 					},
 					{
@@ -1040,6 +1064,64 @@ func init() {
 							"maxSelect": 1,
 							"displayFields": null
 						}
+					},
+					{
+						"system": false,
+						"id": "axfvarwm",
+						"name": "next",
+						"type": "relation",
+						"required": false,
+						"presentable": false,
+						"unique": false,
+						"options": {
+							"collectionId": "20vk5ys2v509j6m",
+							"cascadeDelete": false,
+							"minSelect": null,
+							"maxSelect": 1,
+							"displayFields": null
+						}
+					},
+					{
+						"system": false,
+						"id": "sie0woo3",
+						"name": "repeatable",
+						"type": "bool",
+						"required": false,
+						"presentable": false,
+						"unique": false,
+						"options": {}
+					},
+					{
+						"system": false,
+						"id": "khzqxsxj",
+						"name": "pace",
+						"type": "number",
+						"required": false,
+						"presentable": false,
+						"unique": false,
+						"options": {
+							"min": null,
+							"max": null,
+							"noDecimal": false
+						}
+					},
+					{
+						"system": false,
+						"id": "bg3pnn9f",
+						"name": "paceUnit",
+						"type": "select",
+						"required": false,
+						"presentable": false,
+						"unique": false,
+						"options": {
+							"maxSelect": 1,
+							"values": [
+								"day",
+								"week",
+								"month",
+								"year"
+							]
+						}
 					}
 				],
 				"indexes": [],
@@ -1053,7 +1135,7 @@ func init() {
 			{
 				"id": "peuknrhwz9dib6x",
 				"created": "2023-12-02 16:16:48.911Z",
-				"updated": "2023-12-15 15:34:41.095Z",
+				"updated": "2023-12-26 18:52:32.394Z",
 				"name": "savings",
 				"type": "base",
 				"system": false,
@@ -1107,13 +1189,13 @@ func init() {
 						"presentable": false,
 						"unique": false,
 						"options": {
-							"maxSelect": 5,
-							"maxSize": 5242880,
 							"mimeTypes": [
 								"image/png",
 								"image/jpeg"
 							],
 							"thumbs": [],
+							"maxSelect": 5,
+							"maxSize": 5242880,
 							"protected": false
 						}
 					},
@@ -1213,7 +1295,7 @@ func init() {
 			{
 				"id": "6ctn2l54gjz8up4",
 				"created": "2023-12-04 18:16:18.731Z",
-				"updated": "2023-12-05 23:39:34.489Z",
+				"updated": "2023-12-26 18:52:32.394Z",
 				"name": "AccountGroups",
 				"type": "base",
 				"system": false,
@@ -1227,12 +1309,12 @@ func init() {
 						"presentable": true,
 						"unique": false,
 						"options": {
-							"maxSelect": 1,
-							"maxSize": 5242880,
 							"mimeTypes": [
 								"image/svg+xml"
 							],
 							"thumbs": [],
+							"maxSelect": 1,
+							"maxSize": 5242880,
 							"protected": false
 						}
 					},
