@@ -42,7 +42,7 @@ func main() {
 	// [ Transactions ]===========================================
 	hooks.BindTransactionsHooks(app)
 
-	// -------------------------------------------[Migration]-------------------------------------------
+	// -------------------------------------------[Migration ]-------------------------------------------
 	// loosely check if it was executed using "go run"
 	isGoRun := strings.HasPrefix(os.Args[0], os.TempDir())
 
