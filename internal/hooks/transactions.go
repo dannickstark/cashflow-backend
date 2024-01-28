@@ -14,6 +14,11 @@ import (
 
 // A function to bind all the hooks for the transactions
 func BindTransactionsHooks(app *pocketbase.PocketBase) {
+	/* check := utils.CheckIfCollectionExists(app, "transactions")
+	if !check {
+		return
+	} */
+
 	// Add scheduled jobs
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		scheduler := cron.New()

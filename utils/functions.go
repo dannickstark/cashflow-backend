@@ -2,12 +2,14 @@ package utils
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/golang-module/carbon/v2"
+	"github.com/pocketbase/pocketbase"
 )
 
 // A function to save JSON data into a file
@@ -106,4 +108,14 @@ func ComputeNextDate(date string, pace int, paceUnit PaceUnit) string {
 	}
 
 	return ""
+}
+
+// ----------[ Collection ]
+func CheckIfCollectionExists(app *pocketbase.PocketBase, collectionName string) bool {
+	collection, err := app.Dao().FindCollectionByNameOrId(collectionName)
+	if err != nil {
+		log.Println(err.Error())
+		return false
+	}
+	return collection != nil
 }

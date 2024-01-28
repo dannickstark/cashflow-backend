@@ -49,4 +49,4 @@ COPY /data /pb/data
 EXPOSE 8080
 
 # start PocketBase
-CMD ["/pb/main", "serve", "--http=0.0.0.0:8080"]
+CMD ["/pb/main", "serve", "--http=0.0.0.0:8080", "--encryptionEnv=PB_ENCRYPTION_KEY"]
